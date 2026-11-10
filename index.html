@@ -30,6 +30,7 @@ html{-webkit-text-size-adjust:100%}
   --font-display:'Kanit', 'Arial Black', system-ui, sans-serif;
   --font-mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
   --ease:cubic-bezier(.25,.1,.25,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -49,7 +50,7 @@ a{color:inherit}
 
 /* FadeIn */
 .fi{opacity:1;transform:none}
-.js .fi{opacity:0;transform:translate(var(--fx,0),var(--fy,30px));transition:opacity var(--fd,.7s) var(--ease) var(--fdl,0s),transform var(--fd,.7s) var(--ease) var(--fdl,0s)}
+.js .fi{opacity:0;transform:translate(var(--fx,0),var(--fy,30px));transition:opacity var(--fd,.9s) var(--ease-out) var(--fdl,0s),transform var(--fd,.9s) var(--ease-out) var(--fdl,0s),filter var(--fd,.9s) var(--ease-out) var(--fdl,0s),clip-path 1.1s var(--ease-out) var(--fdl,0s)}
 .js .fi.in{opacity:1;transform:none}
 
 /* ---------- HERO ---------- */
@@ -211,7 +212,7 @@ a{color:inherit}
 .pcard:hover .pc-visual.slide img{transform:none}
 .stack-item{display:contents}
 #stack{display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)}
-#stack .pcard{position:relative!important;top:auto!important;margin:0 auto!important;transform:none!important;width:100%}
+#stack .pcard{position:relative!important;top:auto!important;margin:0 auto!important;width:100%}
 #stack .pcard>*{opacity:1!important}
 #stack{padding-bottom:2vh}
 /* series on phones */
@@ -398,11 +399,64 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
 .exp{padding-top:56px!important}
 .pc-visual.poster-frame{aspect-ratio:1600/1130!important;background:#fff}
 @media(min-width:900px){#stack .pcard[data-i="2"]{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}}
+
+/* ================= MOTION PASS ================= */
+#prog{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#B600A8,#7621B0 55%,#BE4C00);pointer-events:none}
+/* nav: active section indicator */
+.nav a{position:relative;opacity:.62;transition:opacity .3s}
+.nav a.on,.nav a:hover{opacity:1}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:linear-gradient(90deg,#B600A8,#BE4C00);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease-out)}
+.nav a.on::after{transform:scaleX(1)}
+/* hero: avatar pops in, then floats */
+.js .portrait .fi{transform:translateY(46px) scale(.78);--fd:1.2s}
+.js .portrait .fi.in{transform:none}
+#gazeSprite,#avatarImg{animation:bob 5.5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+.hero h1{will-change:transform,opacity}
+.hero-title-wrap{overflow:visible}
+/* headings sharpen as they arrive */
+.js .big-heading.fi{filter:blur(12px)}
+.js .big-heading.fi.in{filter:none}
+/* project cards rise in, lift on hover (glass follows) */
+.js .rise{transform:translateY(64px) scale(.97)}
+.js .rise.in{transform:none;animation:rise 1.1s var(--ease-out) backwards;transition:transform .45s var(--ease-out)}
+@keyframes rise{from{transform:translateY(64px) scale(.97)}}
+@media(hover:hover){.js .rise.in:hover{transform:translateY(-6px)}}
+/* photos unmask and settle */
+.js .ph.fi{clip-path:inset(10% 0 10% 0 round 6px)}
+.js .ph.fi.in{clip-path:inset(0 0 0 0 round 6px)}
+.js .ph.fi:not(.in) img{transform:scale(1.16)}
+.ph img{transition:transform 1.3s var(--ease-out),filter .5s}
+.tile img{transition:transform .8s var(--ease-out)}
+@media(hover:hover){.tile:hover img{transform:scale(1.06)}}
+/* experience rows slide in from the side */
+.xp.fi{--fx:-28px;--fy:0px}
+/* button sheen */
+.btn-contact{position:relative;overflow:hidden}
+.btn-contact::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:translateX(-140%) skewX(-18deg);transition:transform .8s var(--ease-out);pointer-events:none}
+.btn-contact:hover::after{transform:translateX(340%) skewX(-18deg)}
+.btn-ghost{transition:background .25s,transform .35s var(--ease-out)}
+.btn-ghost:hover{transform:translateY(-2px)}
+/* lightbox opens softly */
+.lb{animation:lbIn .3s var(--ease-out)}
+.lb img,.lb video{animation:lbZoom .5s var(--ease-out)}
+@keyframes lbIn{from{opacity:0}}
+@keyframes lbZoom{from{transform:scale(.93);opacity:0}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;scroll-padding-top:84px}}
+@media (prefers-reduced-motion:reduce){
+  #gazeSprite,#avatarImg,.lb,.lb img,.lb video{animation:none}
+  .js .rise,.js .portrait .fi{transform:none}
+  .js .big-heading.fi{filter:none}
+  .js .ph.fi{clip-path:none}
+  .js .ph.fi:not(.in) img{transform:none}
+  #prog{display:none}
+}
 </style>
 
 </head>
 <body>
 <canvas id="glass" aria-hidden="true"></canvas>
+<div id="prog" aria-hidden="true"></div>
 <main>
 <!-- ================= HERO ================= -->
 <section class="hero gutter" id="top">
@@ -803,37 +857,69 @@ const chars = [...txt].map(c => { const s = document.createElement('span'); s.cl
 const stack = document.getElementById('stack');
 const cards = [...document.querySelectorAll('.pcard')];
 
-function onScroll(){
-  if (reduce) return;
-  const vh = innerHeight;
-  // marquee
-  const top = mq.getBoundingClientRect().top + scrollY;
-  const off = (scrollY - top + vh) * 1.0;
-  row1.style.transform = `translateX(${off - 200 - row1.scrollWidth/3}px)`;
-  row2.style.transform = `translateX(${-(off - 200)}px)`;
-  // reveal
-  const rr = rv.getBoundingClientRect();
-  const p = Math.min(1, Math.max(0, (vh * 0.8 - rr.top) / (rr.height + vh * 0.6)));
-  const n = chars.length;
-  for (let i = 0; i < n; i++) {
-    const t = Math.min(1, Math.max(0, (p - i / n) * n / 8));
-    chars[i].style.opacity = 0.2 + 0.8 * t;
-  }
-  // card stack
-  const sr = stack.getBoundingClientRect();
-  const prog = Math.min(1, Math.max(0, -sr.top / (sr.height - vh)));
-  const total = cards.length;
-  cards.forEach((c, i) => {
-    const target = 1 - (total - 1 - i) * 0.03;
-    const start = i / total;
-    const k = prog <= start ? 0 : (prog - start) / (1 - start);
-    c.style.transform = `scale(${1 - (1 - target) * k})`;
-  });
+/* Smoothed scroll engine: everything scroll-linked eases toward the real scroll position */
+const heroH1 = title.parentElement, prog = document.getElementById('prog');
+const navLinks = [...document.querySelectorAll('.nav a')].map(a => ({ a, sec: document.querySelector(a.getAttribute('href')) }));
+let M = {}, sy = scrollY, syT = scrollY, ticking = 0, lastP = -1, activeNav = null;
+window.__sy = sy;
+const docTop = el => el.getBoundingClientRect().top + scrollY;
+function measure(){
+  M = { vh: innerHeight, mq: docTop(mq), rv: docTop(rv), rvH: rv.offsetHeight, w1: row1.scrollWidth / 3,
+        max: Math.max(1, document.documentElement.scrollHeight - innerHeight), secs: navLinks.map(n => docTop(n.sec)) };
 }
-cards.forEach((c, i) => c.style.setProperty('--off', (i * 28) + 'px'));
+function render(y){
+  const vh = M.vh;
+  // marquee glides with inertia
+  const off = y - M.mq + vh;
+  row1.style.transform = `translate3d(${off - 200 - M.w1}px,0,0)`;
+  row2.style.transform = `translate3d(${-(off - 200)}px,0,0)`;
+  // about text lights up
+  const p = Math.min(1, Math.max(0, (vh * 0.8 - (M.rv - y)) / (M.rvH + vh * 0.6)));
+  if (Math.abs(p - lastP) > 0.0005) { lastP = p; const n = chars.length;
+    for (let i = 0; i < n; i++) { const t = Math.min(1, Math.max(0, (p - i / n) * n / 8)); const o = (0.2 + 0.8 * t).toFixed(2);
+      if (chars[i]._o !== o) { chars[i]._o = o; chars[i].style.opacity = o; } } }
+  // hero title drifts and fades as you leave
+  if (y < vh * 1.1) { const k = Math.min(1, y / vh); heroH1.style.transform = `translate3d(0,${y * 0.28}px,0) scale(${1 - k * 0.06})`; heroH1.style.opacity = (1 - k * 1.25).toFixed(3); }
+  // progress bar + active nav link
+  prog.style.transform = `scaleX(${Math.min(1, y / M.max)})`;
+  let act = null; for (let i = 0; i < M.secs.length; i++) if (M.secs[i] <= y + vh * 0.45) act = navLinks[i].a;
+  if (act !== activeNav) { if (activeNav) activeNav.classList.remove('on'); if (act) act.classList.add('on'); activeNav = act; }
+}
+let lastT = 0;
+function frame(now){
+  const dt = Math.min(250, now - (lastT || now - 16)); lastT = now;   // time-based easing: same feel at any frame rate
+  sy += (syT - sy) * (1 - Math.exp(-dt / 95)); if (Math.abs(syT - sy) < 0.25) sy = syT;
+  window.__sy = sy; render(sy);
+  if (sy !== syT) ticking = requestAnimationFrame(frame); else { ticking = 0; lastT = 0; }
+}
+function onScroll(){
+  syT = scrollY;
+  if (reduce) { sy = syT; window.__sy = sy; return; }
+  if (!ticking) ticking = requestAnimationFrame(frame);
+}
+measure();
 addEventListener('scroll', onScroll, { passive: true });
-addEventListener('resize', onScroll);
-onScroll();
+addEventListener('resize', () => { measure(); onScroll(); });
+addEventListener('load', () => { measure(); if (!reduce) render(sy); });
+if ('ResizeObserver' in window) new ResizeObserver(() => { measure(); if (!reduce) render(sy); }).observe(document.body);
+if (!reduce) render(sy);
+
+/* Project cards rise in */
+cards.forEach(c => { c.classList.add('rise'); io.observe(c); });
+
+/* KPI numbers count up the first time they are seen */
+if (!reduce) {
+  const cu = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return; cu.unobserve(e.target);
+    const el = e.target, m = el.textContent.trim().match(/^(\$?)([\d,]+(?:\.\d+)?)(%|K|T\+|\+)?$/); if (!m) return;
+    const end = parseFloat(m[2].replace(/,/g, '')), dec = (m[2].split('.')[1] || '').length, comma = m[2].includes(',');
+    const fmt = v => m[1] + (comma ? v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }) : v.toFixed(dec)) + (m[3] || '');
+    const t0 = performance.now(), final = el.textContent;
+    (function step(now){ const k = Math.min(1, (now - t0) / 1300), ez = 1 - Math.pow(1 - k, 4);
+      el.textContent = k < 1 ? fmt(end * ez) : final; if (k < 1) requestAnimationFrame(step); })(t0);
+  }), { threshold: 0.6 });
+  document.querySelectorAll('.kpi b').forEach(b => cu.observe(b));
+}
 if (reduce) chars.forEach(c => c.style.opacity = 1);
 
 /* Certificates / badges open full-size */
@@ -918,7 +1004,7 @@ document.querySelectorAll('.pcard').forEach(card => {
   const fs = `
 precision highp float;
 #define MAX ${MAX}
-uniform vec2 uRes; uniform float uDpr, uTime, uScroll; uniform int uCount;
+uniform vec2 uRes, uMouse; uniform float uDpr, uTime, uScroll; uniform int uCount;
 uniform vec4 uRect[MAX]; uniform float uRad[MAX];
 
 // ---------- layer 0: background that the glass refracts ----------
@@ -931,6 +1017,7 @@ vec3 bg(vec2 p){
   c+=blob(p,vec2(R.x*(.82+.08*cos(t)),mod(R.y*.70-s*.18,H)-R.y*.4),R.x*.30,vec3(.30,.10,.62));
   c+=blob(p,vec2(R.x*(.55+.15*sin(t*.8+2.)),mod(R.y*1.25-s*.26,H)-R.y*.4),R.x*.24,vec3(.62,.24,.0));
   c+=blob(p,vec2(R.x*(.30+.12*cos(t*1.1+1.)),mod(R.y*1.55-s*.20,H)-R.y*.4),R.x*.22,vec3(.18,.32,.48));
+  c+=blob(p,uMouse,max(R.x*.12,150.),vec3(.26,.11,.40));   // soft light that follows the cursor
   vec2 q=p+vec2(0.,mod(s*.35,44.));
   vec2 g=abs(fract(q/44.)-.5)*44.;
   c+=(1.-smoothstep(0.,1.1,min(g.x,g.y)))*.045;
@@ -1023,7 +1110,9 @@ void main(){
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   const U = n => gl.getUniformLocation(pr, n);
-  const uRes = U('uRes'), uDpr = U('uDpr'), uTime = U('uTime'), uScroll = U('uScroll'), uCount = U('uCount'), uRect = U('uRect'), uRad = U('uRad');
+  const uRes = U('uRes'), uDpr = U('uDpr'), uTime = U('uTime'), uScroll = U('uScroll'), uCount = U('uCount'), uRect = U('uRect'), uRad = U('uRad'), uMouse = U('uMouse');
+  let mx = -9999, my = -9999, mtx = -9999, mty = -9999;
+  addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; mtx = e.clientX; mty = e.clientY; if (mx < -9000) { mx = mtx; my = mty; } }, { passive: true });
   const els = [...document.querySelectorAll('[data-glass]')];
   const radCache = new Map();
   let dpr = 1;
@@ -1047,7 +1136,8 @@ void main(){
       rects.set([r.left, r.top, r.width, r.height], n * 4); rads[n] = radCache.get(el) * sc; n++;
     }
     gl.uniform2f(uRes, cv.width, cv.height); gl.uniform1f(uDpr, dpr);
-    gl.uniform1f(uTime, reduce ? 0 : (now - t0) / 1000); gl.uniform1f(uScroll, scrollY);
+    gl.uniform1f(uTime, reduce ? 0 : (now - t0) / 1000); gl.uniform1f(uScroll, window.__sy ?? scrollY);
+    mx += (mtx - mx) * 0.09; my += (mty - my) * 0.09; gl.uniform2f(uMouse, mx, my);
     gl.uniform1i(uCount, n); gl.uniform4fv(uRect, rects); gl.uniform1fv(uRad, rads);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     requestAnimationFrame(frame);
