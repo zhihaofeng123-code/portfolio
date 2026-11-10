@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Zhihao (Vincent) Feng: USC Marshall MSBA, AI-startup builder and photographer.">
 <meta property="og:title" content="Vincent Feng Portfolio">
-<meta property="og:image" content="img/avatar-3d.webp">
+<meta property="og:image" content="https://vincent-feng.vercel.app/img/og.jpg">
+<meta property="og:description" content="AI startup tinkerer, part-time photographer, full-time foodie.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/avatar-3d.webp">
 <title>Vincent Feng Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -272,7 +274,7 @@ a{color:inherit}
 .eyebrow::after{content:"";flex:1;height:1px;background:var(--line-light)}
 
 /* award: matted print + wall label */
-.award-wall{display:grid;grid-template-columns:1fr;gap:28px;align-items:center;margin-bottom:120px}
+.award-wall{display:grid;grid-template-columns:1fr;gap:28px;align-items:center;margin-bottom:24px}
 @media(min-width:960px){.award-wall{grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:56px}}
 .print{margin:0;background:#f3f1ec;padding:clamp(10px,1.6vw,22px);box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);cursor:zoom-in}
 .print img{width:100%;height:auto;display:block}
@@ -389,7 +391,7 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
 }
 
 /* tighter section rhythm */
-#stack .pcard[data-i="6"] .pc-visual video{object-fit:cover}
+#stack .pcard:has(img[src*="tidemark"]) .pc-visual video{object-fit:cover}
 .pc-actions{display:flex;gap:10px;flex-wrap:wrap}
 .pc-visual video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
 .lb video{max-width:100%;max-height:100%;box-shadow:0 30px 80px rgba(0,0,0,.6)}
@@ -398,7 +400,7 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
 .lens{padding-bottom:48px!important}
 .exp{padding-top:56px!important}
 .pc-visual.poster-frame{aspect-ratio:1600/1130!important;background:#fff}
-@media(min-width:900px){#stack .pcard[data-i="2"]{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}}
+@media(min-width:900px){#stack .pcard:has(.poster-frame){grid-template-columns:minmax(0,4fr) minmax(0,8fr)}}
 
 /* ================= MOTION PASS ================= */
 #prog{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#B600A8,#7621B0 55%,#BE4C00);pointer-events:none}
@@ -451,10 +453,62 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
   .js .ph.fi:not(.in) img{transform:none}
   #prog{display:none}
 }
+
+/* ================= INTRO ================= */
+#intro{position:fixed;inset:0;z-index:200;background:#0a0a0f;display:grid;place-items:center;animation:introOut .8s var(--ease-out) 1.25s forwards}
+.intro-name{display:flex;overflow:hidden;font-weight:900;font-size:clamp(2rem,9vw,7rem);letter-spacing:-.02em;line-height:1.05;color:var(--mist)}
+.intro-name span{display:inline-block;transform:translateY(110%);animation:introUp .7s var(--ease-out) calc(var(--i) * 38ms + 80ms) forwards}
+@keyframes introUp{to{transform:none}}
+@keyframes introOut{to{transform:translateY(-100%);visibility:hidden}}
+.intro-run .hero .fi{transition-delay:calc(var(--fdl,0s) + 1.3s)}
+
+/* ================= SHEETS (gallery + case studies) ================= */
+.sheet{position:fixed;inset:0;z-index:80;overflow-y:auto;overscroll-behavior:contain;background:linear-gradient(180deg,#0d0c14,#0a0a0f 40%);animation:sheetIn .6s var(--ease-out)}
+.sheet.out{animation:sheetOut .35s ease-in forwards}
+@keyframes sheetIn{from{transform:translateY(6%);opacity:0}}
+@keyframes sheetOut{to{transform:translateY(4%);opacity:0}}
+.sheet-in{max-width:1180px;margin:0 auto;padding-block:96px 96px}
+.sheet-x{position:fixed;z-index:2;top:calc(14px + env(safe-area-inset-top,0px));left:max(14px,env(safe-area-inset-left,0px));border:0;cursor:pointer;color:var(--mist);font-family:inherit;font-weight:500;text-transform:uppercase;letter-spacing:.1em;font-size:.8rem;padding:12px 20px;border-radius:999px;background:rgba(30,28,44,.6);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 10px 24px rgba(0,0,0,.4);transition:transform .35s var(--ease-out)}
+.sheet-x:hover{transform:translateX(-3px)}
+.sheet-title{font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:1;font-size:clamp(2.6rem,9vw,120px);margin-bottom:48px}
+.sheet .series{margin-bottom:80px}
+.wall-more{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5}
+.wall-label .btn-contact{align-self:flex-start;margin-top:6px}
+.btn-ghost.solid{background:var(--mist);color:var(--ink);border-color:var(--mist)}
+.btn-ghost.solid:hover{background:#fff}
+.pc-actions .btn-ghost{padding:10px 20px;font-size:.78rem}
+/* case study */
+.cs>*{animation:csIn .8s var(--ease-out) backwards}
+.cs>*:nth-child(2){animation-delay:.06s}.cs>*:nth-child(3){animation-delay:.12s}.cs>*:nth-child(4){animation-delay:.18s}.cs>*:nth-child(n+5){animation-delay:.24s}
+@keyframes csIn{from{opacity:0;transform:translateY(28px)}}
+.cs-cat{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:14px}
+.cs-lede{font-size:clamp(1.15rem,2.2vw,1.7rem);font-weight:300;line-height:1.45;max-width:46rem;opacity:.9;margin-bottom:28px}
+.cs-links{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:48px}
+.cs-hero{border-radius:24px;overflow:hidden;background:#000;margin-bottom:56px;box-shadow:0 30px 70px rgba(0,0,0,.5),0 0 0 1px var(--line-light)}
+.cs-hero img,.cs-hero video{width:100%;display:block}
+.cs-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:64px}
+@media(min-width:800px){.cs-stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.cs-stat{padding:22px;border-radius:22px;background:rgba(255,255,255,.045);box-shadow:inset 0 1px 0 rgba(255,255,255,.1);display:flex;flex-direction:column;gap:8px}
+.cs-stat b{font-weight:800;font-size:clamp(1.6rem,3.4vw,2.6rem);line-height:1;font-variant-numeric:tabular-nums}
+.cs-stat span{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;opacity:.6;line-height:1.4}
+.cs-sec{display:grid;grid-template-columns:1fr;gap:10px 40px;padding-block:32px;border-top:1px solid var(--line-light)}
+@media(min-width:800px){.cs-sec{grid-template-columns:240px minmax(0,1fr)}}
+.cs-sec h3{font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:1.05rem;padding-top:3px}
+.cs-sec p,.cs-sec li{font-weight:300;line-height:1.7;opacity:.82;max-width:44rem}
+.cs-sec ol,.cs-sec ul{padding-left:1.2em;display:flex;flex-direction:column;gap:8px}
+.cs-sec p+p{margin-top:12px}
+.cs-shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:56px}
+@media(min-width:800px){.cs-shots.phones{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.cs-shots img,.cs-shots video{width:100%;border-radius:16px;display:block;cursor:zoom-in;background:#111;box-shadow:0 0 0 1px var(--line-light)}
+.cs-next{margin-top:64px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){#intro{display:none}.sheet,.sheet.out,.cs>*{animation:none}}
 </style>
 
 </head>
 <body>
+<div id="intro" aria-hidden="true"><div class="intro-name"><span style="--i:0">V</span><span style="--i:1">I</span><span style="--i:2">N</span><span style="--i:3">C</span><span style="--i:4">E</span><span style="--i:5">N</span><span style="--i:6">T</span><span style="--i:7">&nbsp;</span><span style="--i:8">F</span><span style="--i:9">E</span><span style="--i:10">N</span><span style="--i:11">G</span></div></div>
+<script>(function(){var el=document.getElementById('intro'),seen=false;try{seen=sessionStorage.getItem('intro');sessionStorage.setItem('intro','1')}catch(e){}
+if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches)el.remove();else document.documentElement.classList.add('intro-run');})();</script>
 <canvas id="glass" aria-hidden="true"></canvas>
 <div id="prog" aria-hidden="true"></div>
 <main>
@@ -572,24 +626,35 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
         <p class="pc-sum">Snap one photo of a broken sidewalk or pothole. On-phone AI names the damage, GPS finds the spot, a server model scores severity, and you earn points at local shops. Built as a working iOS app plus a city dashboard in one weekend.</p>
         <div class="kpis"><div class="kpi"><b>76%</b><span>did nothing last time they saw a problem</span></div><div class="kpi"><b>10%</b><span>used an official channel</span></div><div class="kpi"><b>1 photo</b><span>no forms to fill</span></div></div>
         <div class="pc-foot"><div class="tags dark"><span>iOS</span><span>Core ML</span><span>Supabase</span><span>Claude Code</span></div>
-          <div class="pc-actions"><a class="btn-ghost" href="https://github.com/DY0810/origin-hackathon" target="_blank" rel="noopener">GitHub ↗</a><button class="btn-ghost" type="button" data-slides="mend-01.jpg,mend-showcase.mp4,mend-demo.mp4,mend-02.jpg,mend-03.jpg,mend-04.jpg,mend-05.jpg,mend-06.jpg,team-black.jpg" data-title="Mend">Full screen ↗</button></div></div>
+          <div class="pc-actions"><button class="btn-ghost solid" type="button" data-open="mend">Case study →</button><a class="btn-ghost" href="https://github.com/DY0810/origin-hackathon" target="_blank" rel="noopener">GitHub ↗</a><button class="btn-ghost" type="button" data-slides="mend-01.jpg,mend-showcase.mp4,mend-demo.mp4,mend-02.jpg,mend-03.jpg,mend-04.jpg,mend-05.jpg,mend-06.jpg,team-black.jpg" data-title="Mend">Full screen ↗</button></div></div>
       </div>
       <figure class="pc-visual"><img src="img/mend-01.jpg" alt="Mend pitch deck cover: Angelenos see the cracks. The city doesn't." loading="lazy"></figure>
     </article></div>
     <div class="stack-item"><article class="pcard" data-glass data-i="1">
       <div class="pc-info">
-        <div class="pc-head"><span class="num">02</span><span class="pc-cat">Vibe coding · Side project · Sept 2026</span></div>
+        <div class="pc-head"><span class="num">02</span><span class="pc-cat">Vibe coding · Team project · Oct 2026</span></div>
+        <h3 class="pc-name">Fortune Cookie</h3>
+        <p class="pc-sum">Crack one cookie a day and get a fortune from your Four Pillars birth chart, written in plain English. Everything is calculated in your browser and saved only on your device.</p>
+        <div class="kpis"><div class="kpi"><b>4,000</b><span>test charts, 0 mismatches</span></div><div class="kpi"><b>5</b><span>life areas per reading</span></div><div class="kpi"><b>1 day</b><span>to lifetime forecasts</span></div></div>
+        <div class="pc-foot"><div class="tags dark"><span>React</span><span>TypeScript</span><span>Vite</span></div>
+          <div class="pc-actions"><button class="btn-ghost solid" type="button" data-open="fortune-cookie">Case study →</button><a class="btn-ghost" href="https://junieling25-smrt.github.io/fortune-cookie/" target="_blank" rel="noopener">Live site ↗</a><button class="btn-ghost" type="button" data-slides="fc-01.jpg,fc-02.jpg,fc-03.jpg,fc-04.jpg,fc-05.jpg,fc-06.jpg,fc-07.jpg,fc-08.jpg" data-title="Fortune Cookie">Full screen ↗</button></div></div>
+      </div>
+      <figure class="pc-visual"><img src="img/fc-01.jpg" alt="Fortune Cookie desktop view with today's fortune" loading="lazy"></figure>
+    </article></div>
+    <div class="stack-item"><article class="pcard" data-glass data-i="2">
+      <div class="pc-info">
+        <div class="pc-head"><span class="num">03</span><span class="pc-cat">Vibe coding · Side project · Sept 2026</span></div>
         <h3 class="pc-name">The Long Table · SGV</h3>
         <p class="pc-sum">My own guide to the San Gabriel Valley: a bilingual map of 110 Asian restaurants with must-order dishes, tips, closures, filters and a nearest-to-me sort. Every listing checked twice.</p>
         <div class="kpis"><div class="kpi"><b>110</b><span>restaurants mapped</span></div><div class="kpi"><b>99</b><span>still open</span></div><div class="kpi"><b>6</b><span>ways to filter & sort</span></div></div>
         <div class="pc-foot"><div class="tags dark"><span>Vercel</span><span>Maps</span><span>Bilingual</span></div>
-          <div class="pc-actions"><a class="btn-ghost" href="https://sgv-eats.vercel.app" target="_blank" rel="noopener">Live site ↗</a><button class="btn-ghost" type="button" data-slides="sgv-01.jpg,sgv-02.jpg" data-title="The Long Table · SGV">Full screen ↗</button></div></div>
+          <div class="pc-actions"><button class="btn-ghost solid" type="button" data-open="long-table">Case study →</button><a class="btn-ghost" href="https://sgv-eats.vercel.app" target="_blank" rel="noopener">Live site ↗</a><button class="btn-ghost" type="button" data-slides="sgv-01.jpg,sgv-02.jpg" data-title="The Long Table · SGV">Full screen ↗</button></div></div>
       </div>
       <figure class="pc-visual"><img src="img/sgv-01.jpg" alt="The Long Table SGV project cover" loading="lazy"></figure>
     </article></div>
-    <div class="stack-item"><article class="pcard" data-glass data-i="2">
+    <div class="stack-item"><article class="pcard" data-glass data-i="3">
       <div class="pc-info">
-        <div class="pc-head"><span class="num">03</span><span class="pc-cat">Machine Learning · DSO 530</span></div>
+        <div class="pc-head"><span class="num">04</span><span class="pc-cat">Machine Learning · DSO 530</span></div>
         <h3 class="pc-name">Pricing Risk in a Zero-Heavy World</h3>
         <p class="pc-sum">Predicting auto-insurance losses when most policies never file a claim.</p>
         <div class="kpis"><div class="kpi"><b>0.844</b><span>ROC-AUC, claim prediction</span></div><div class="kpi"><b>88.8%</b><span>policies with zero loss</span></div><div class="kpi"><b>39,928</b><span>policies modeled</span></div></div>
@@ -598,9 +663,9 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
       </div>
       <figure class="pc-visual poster-frame"><img src="img/poster.jpg" alt="Research poster: Pricing Risk in a Zero-Heavy World" loading="lazy"></figure>
     </article></div>
-    <div class="stack-item"><article class="pcard" data-glass data-i="3">
+    <div class="stack-item"><article class="pcard" data-glass data-i="4">
       <div class="pc-info">
-        <div class="pc-head"><span class="num">04</span><span class="pc-cat">Regression · Yelp Open Data</span></div>
+        <div class="pc-head"><span class="num">05</span><span class="pc-cat">Regression · Yelp Open Data</span></div>
         <h3 class="pc-name">Delivery &amp; Ratings Study</h3>
         <p class="pc-sum">Does offering delivery earn restaurants better Yelp ratings? The data says no.</p>
         <div class="kpis"><div class="kpi"><b>−0.4★</b><span>rating gap for delivery</span></div><div class="kpi"><b>0.131</b><span>R² multivariable model</span></div><div class="kpi"><b>2.7–4.8</b><span>95% prediction interval, case study</span></div></div>
@@ -609,9 +674,9 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
       </div>
       <figure class="pc-visual"><img src="img/yelp-01.jpg" alt="Delivery and Ratings Study title slide" loading="lazy"></figure>
     </article></div>
-    <div class="stack-item"><article class="pcard" data-glass data-i="4">
+    <div class="stack-item"><article class="pcard" data-glass data-i="5">
       <div class="pc-info">
-        <div class="pc-head"><span class="num">05</span><span class="pc-cat">AI / NLP · MSBA AI Case Competition</span></div>
+        <div class="pc-head"><span class="num">06</span><span class="pc-cat">AI / NLP · MSBA AI Case Competition</span></div>
         <h3 class="pc-name">PoolupSC</h3>
         <p class="pc-sum">A carpool and outings app for the MSBA community, designed from commuter survey data.</p>
         <div class="kpis"><div class="kpi"><b>19%</b><span>modeled route efficiency gain</span></div><div class="kpi"><b>98.5%</b><span>students want to explore LA</span></div><div class="kpi"><b>1 in 3</b><span>students own a car</span></div></div>
@@ -620,9 +685,9 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
       </div>
       <figure class="pc-visual"><img src="img/mac-01.jpg" alt="PoolupSC title slide" loading="lazy" style="object-position:center center"></figure>
     </article></div>
-    <div class="stack-item"><article class="pcard" data-glass data-i="5">
+    <div class="stack-item"><article class="pcard" data-glass data-i="6">
       <div class="pc-info">
-        <div class="pc-head"><span class="num">06</span><span class="pc-cat">SQL &amp; Data Analytics</span></div>
+        <div class="pc-head"><span class="num">07</span><span class="pc-cat">SQL &amp; Data Analytics</span></div>
         <h3 class="pc-name">TuneWorks Entertainment</h3>
         <p class="pc-sum">Where an entertainment booking agency really makes its money, from a normalized SQL database.</p>
         <div class="kpis"><div class="kpi"><b>47.2%</b><span>revenue from top 3 entertainers</span></div><div class="kpi"><b>$140.6K</b><span>total contract revenue</span></div><div class="kpi"><b>111</b><span>engagements analyzed</span></div></div>
@@ -631,9 +696,9 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
       </div>
       <figure class="pc-visual"><img src="img/tw-01.jpg" alt="TuneWorks title slide" loading="lazy" style="object-position:75% center"></figure>
     </article></div>
-    <div class="stack-item"><article class="pcard" data-glass data-i="6">
+    <div class="stack-item"><article class="pcard" data-glass data-i="7">
       <div class="pc-info">
-        <div class="pc-head"><span class="num">07</span><span class="pc-cat">AI startup · Fellow · 2026</span></div>
+        <div class="pc-head"><span class="num">08</span><span class="pc-cat">AI startup · Fellow · 2026</span></div>
         <h3 class="pc-name">Tidemark</h3>
         <p class="pc-sum">A live research product that tracks what big institutions buy and sell, from SEC 13F filings. I&apos;m a Fellow there, helping out with UI/UX polish. Its CEO, Dahai Huang, is a close friend, and we trade a lot of ideas about building with AI.</p>
         <div class="kpis"><div class="kpi"><b>96</b><span>institutions tracked</span></div><div class="kpi"><b>$1.6T+</b><span>holdings covered</span></div><div class="kpi"><b>Free / Pro</b><span>paid plans live</span></div></div>
@@ -664,9 +729,16 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
         <dt>Scope</dt><dd>USC-wide student photography competition</dd>
         <dt>Shown</dt><dd>Tech4Good Conference, October 19, 2026</dd>
       </dl>
+      <button class="btn-contact" type="button" data-open="gallery">Open the gallery →</button>
+      <span class="wall-more">15 more photos: personal work and BASA events</span>
     </div>
   </div>
 
+ </div>
+</section>
+
+<div id="galleryContent" hidden>
+  <h2 class="sheet-title hero-heading">Through my lens</h2>
   <div class="eyebrow fi">Personal work · 08 frames</div>
   <div class="series">
     <figure class="ph s1 tall fi" data-lb="Draped figure"><img src="img/art-04.jpg" alt="Low-angle black and white photo of a draped marble statue under a skylight" loading="lazy"><figcaption>Draped figure</figcaption></figure>
@@ -693,8 +765,12 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
     <p>More recent work and behind-the-scenes shots are on my Instagram.</p>
     <a class="btn-contact" href="https://www.instagram.com/v1nce_0913/" target="_blank" rel="noopener">@v1nce_0913 ↗</a>
   </div>
- </div>
-</section>
+</div>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Detail view">
+  <button class="sheet-x" id="sheetX" type="button">← Back</button>
+  <div class="sheet-in gutter" id="sheetBody"></div>
+</div>
 
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
   <img id="lbImg" alt=""><video id="lbVid" controls playsinline hidden></video>
@@ -962,7 +1038,7 @@ document.querySelectorAll('.pcard').forEach(card => {
   const title = btn.dataset.title;
   let files = [...new Set([first.getAttribute('src').replace('img/', ''), ...btn.dataset.slides.split(',')])];
   files = files.filter(f => !(/\.jpg$/.test(f) && files.includes(f.replace(/\.jpg$/, '.mp4'))));
-  const items = files.map(f => ({ src: 'img/' + f, video: /\.mp4$/.test(f), contain: /^(mac|yelp|tw|mend|sgv|tidemark)/.test(f) }));
+  const items = files.map(f => ({ src: 'img/' + f, video: /\.mp4$/.test(f), contain: /^(mac|yelp|tw|mend|sgv|tidemark|fc)/.test(f) }));
   const vid = document.createElement('video'); vid.muted = true; vid.loop = true; vid.playsInline = true; vid.controls = true; vid.hidden = true; vid.preload = 'none'; fig.appendChild(vid);
   vid.addEventListener('click', e => e.stopPropagation());
   let i = 0;
@@ -1175,8 +1251,109 @@ void main(){
       tx = Math.max(0, Math.min(4, 2 + dx * 2)); ty = Math.max(0, Math.min(4, 2 + dy * 2)); go();
     }, { passive: true });
     document.addEventListener('pointerleave', () => { tx = 2; ty = 2; go(); });
+    // phones: follow the finger, the tilt of the device, or look around when idle
+    let lastInput = 0;
+    const aim = (x, y) => { const r = el.getBoundingClientRect(); if (r.bottom < 0) return;
+      tx = Math.max(0, Math.min(4, 2 + (x - (r.left + r.width / 2)) / (innerWidth * .35) * 2));
+      ty = Math.max(0, Math.min(4, 2 + (y - (r.top + r.height * .45)) / (innerHeight * .3) * 2)); lastInput = performance.now(); go(); };
+    const onTouch = e => { const t = e.touches[0]; if (t) aim(t.clientX, t.clientY); };
+    addEventListener('touchstart', onTouch, { passive: true }); addEventListener('touchmove', onTouch, { passive: true });
+    const onTilt = e => { if (e.gamma == null || e.beta == null) return; if (performance.now() - lastInput < 1200) return;
+      tx = Math.max(0, Math.min(4, 2 + e.gamma / 14)); ty = Math.max(0, Math.min(4, 2 + (e.beta - 45) / 14)); tiltLive = performance.now(); go(); };
+    let tiltLive = 0;
+    if ('DeviceOrientationEvent' in window) {
+      if (typeof DeviceOrientationEvent.requestPermission === 'function')
+        el.addEventListener('click', () => DeviceOrientationEvent.requestPermission().then(p => { if (p === 'granted') addEventListener('deviceorientation', onTilt); }).catch(() => {}), { once: true });
+      else addEventListener('deviceorientation', onTilt);
+    }
+    if (matchMedia('(hover: none)').matches) setInterval(() => { const now = performance.now();
+      if (now - lastInput < 2500 || now - tiltLive < 1500 || scrollY > innerHeight || document.hidden) return;
+      tx = 2 + Math.sin(now / 1700) * 1.7; ty = 2 + Math.sin(now / 2300 + 1) * 1.1; go(); }, 120);
   };
   pre.src = 'img/avatar-gaze.webp';
+})();
+
+/* ================= SHEETS: gallery + case studies ================= */
+(function(){
+  const sheet = document.getElementById('sheet'), body = document.getElementById('sheetBody'), gal = document.getElementById('galleryContent');
+  const CS = {
+    'mend': { cat: 'Vibe coding · Origin Weekend hackathon · Sept 2026', title: 'Mend',
+      lede: 'Angelenos see the cracks. The city doesn’t. Mend turns one photo of a pothole or broken sidewalk into a verified city report, and pays you back in points at local shops.',
+      links: [['GitHub ↗', 'https://github.com/DY0810/origin-hackathon']], hero: { video: 'mend-showcase.mp4' },
+      stats: [['76%', 'did nothing the last time they saw a problem'], ['10%', 'reported through an official channel'], ['73%', 'say reporting takes too long'], ['2 min', 'is all 90% will give it']],
+      secs: [
+        ['The problem', '<p>We surveyed 51 neighbors over the hackathon weekend and looked at 1.77M LA 311 requests. People notice damage all the time (92% in the past month) but almost nobody reports it. The reasons: filing takes too long, they don’t know who to tell, and they doubt it will get fixed.</p>'],
+        ['How it works', '<ol><li><b>Snap.</b> Take one photo of the damage.</li><li><b>Auto-fill.</b> An on-phone AI model names the damage; GPS and compass find the exact spot. No department to pick.</li><li><b>Verify.</b> A server model confirms the report, scores severity from 1 to 5, and you earn points.</li><li><b>See it fixed.</b> The city marks it fixed and you get notified.</li></ol>'],
+        ['What we built', '<p>A working iOS app and a city dashboard in one weekend, built with AI coding tools: Swift and Core ML on the phone, Supabase behind it, and a web dashboard for the city. Reward payouts and the 311 hand-off were still in progress at demo time.</p>'],
+        ['Business model', '<p>Residents report for free. Local stores pay per visit when people redeem points, and business districts and cities pay for verified, severity-scored reports with no duplicates.</p>'],
+        ['What we’d test next', '<p>A two-week pilot near USC with 100 students, half with points and half without, counting real reports. Our survey was 51 people, mostly students, so whether intent turns into action is still an open question.</p>']
+      ],
+      shots: ['mend-demo.mp4', 'mend-01.jpg', 'mend-02.jpg', 'mend-03.jpg', 'mend-04.jpg', 'mend-05.jpg', 'mend-06.jpg', 'team-black.jpg'] },
+    'fortune-cookie': { cat: 'Vibe coding · Team project · Oct 2026', title: 'Fortune Cookie',
+      lede: 'A daily fortune from your Four Pillars birth chart, in plain English. Crack one sealed cookie a day.',
+      links: [['Live site ↗', 'https://junieling25-smrt.github.io/fortune-cookie/'], ['GitHub ↗', 'https://github.com/junieling25-smrt/fortune-cookie']], hero: { img: 'fc-01.jpg' },
+      stats: [['4,000', 'test charts checked, 0 mismatches'], ['5', 'life areas in every reading'], ['7', 'time horizons, day to lifetime'], ['0', 'data leaves your device']],
+      secs: [
+        ['The idea', '<p>Four Pillars (BaZi) readings are usually dense and full of jargon. Fortune Cookie keeps the real calculation and rewrites every sentence so anyone can read it. It is a rebuild of an earlier project called MING, with a new name, brand, onboarding and interface.</p>'],
+        ['How it works', '<ol><li><b>Onboarding.</b> A welcome cookie, then five short steps while it cracks, including finding your birthplace on a map.</li><li><b>Daily cookie.</b> Each day starts with a sealed cookie. Crack it for today’s fortune, a score and a focus area.</li><li><b>Life areas.</b> Overall, personal growth, career, relationships, and family and pets, each with small tweaks and the reason behind them.</li><li><b>Long view.</b> Month, year, 3-, 5- and 10-year, and lifetime forecasts, plus a match view and a shareable image.</li></ol>'],
+        ['Under the hood', '<p>Vite, React and TypeScript. The calculation engine was carried over unchanged and re-verified against 4,000 charts. Everything runs in the browser and is saved only on your device; “Forget me” erases it. Every push runs the engine checks and redeploys the site.</p>']
+      ],
+      shots: ['fc-02.jpg', 'fc-03.jpg', 'fc-04.jpg', 'fc-05.jpg', 'fc-06.jpg', 'fc-08.jpg', 'fc-07.jpg'], phones: true },
+    'long-table': { cat: 'Vibe coding · Side project · Sept 2026', title: 'The Long Table · SGV',
+      lede: 'My own guide to eating in the San Gabriel Valley: a bilingual map and index of 110 Asian restaurants, each checked twice.',
+      links: [['Live site ↗', 'https://sgv-eats.vercel.app']], hero: { img: 'sgv-01.jpg' },
+      stats: [['110', 'restaurants mapped'], ['99', 'still open'], ['22', 'in San Gabriel, the top city'], ['20', 'dumpling and noodle spots']],
+      secs: [
+        ['Why I made it', '<p>I’ve logged 300+ restaurants on Beli, and the SGV is where I eat most. Friends kept asking where to go, so I turned my list into something they can open on a phone and use on the spot.</p>'],
+        ['What it does', '<ul><li>Interactive map plus a searchable index, in English and Chinese.</li><li>Filter by city and cuisine, show only places that are still open.</li><li>Sort by nearest (enter a ZIP), top-rated, or random when you can’t decide.</li><li>Each listing has must-order dishes and a tip.</li></ul>'],
+        ['How it was built', '<p>Vibe-coded with AI tools and deployed on Vercel. The data is my own: every restaurant was checked twice for whether it is still open.</p>']
+      ],
+      shots: ['sgv-02.jpg'] }
+  };
+  const order = ['mend', 'fortune-cookie', 'long-table'];
+  const media = f => /\.mp4$/.test(f) ? `<video src="img/${f}" poster="img/${f.replace('.mp4', '.jpg')}" controls muted playsinline preload="none"></video>` : `<img src="img/${f}" alt="" loading="lazy" data-shot="${f}">`;
+  function caseHTML(id){
+    const c = CS[id], nx = order[(order.indexOf(id) + 1) % order.length];
+    return `<article class="cs"><div class="cs-cat">${c.cat}</div><h2 class="sheet-title hero-heading">${c.title}</h2><p class="cs-lede">${c.lede}</p>
+      <div class="cs-links">${c.links.map(([t, u]) => `<a class="btn-ghost" href="${u}" target="_blank" rel="noopener">${t}</a>`).join('')}</div>
+      <div class="cs-hero">${c.hero.video ? `<video src="img/${c.hero.video}" poster="img/${c.hero.video.replace('.mp4', '.jpg')}" controls playsinline preload="metadata"></video>` : `<img src="img/${c.hero.img}" alt="${c.title}">`}</div>
+      <div class="cs-stats">${c.stats.map(([v, l]) => `<div class="cs-stat"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+      ${c.secs.map(([h, t]) => `<section class="cs-sec"><h3>${h}</h3><div>${t}</div></section>`).join('')}
+      <div class="cs-shots${c.phones ? ' phones' : ''}">${c.shots.map(media).join('')}</div>
+      <div class="cs-next"><button class="btn-ghost" type="button" data-close>← All projects</button><button class="btn-contact" type="button" data-open="${nx}">Next: ${CS[nx].title} →</button></div></article>`;
+  }
+  let current = null;
+  function show(id){
+    if (id !== 'gallery' && !CS[id]) return false;
+    if (gal.parentNode === body) document.body.appendChild(gal), gal.hidden = true;
+    body.innerHTML = '';
+    if (id === 'gallery') { body.appendChild(gal); gal.hidden = false; }
+    else {
+      body.innerHTML = caseHTML(id);
+      const shots = [...body.querySelectorAll('[data-shot]')];
+      const list = shots.map((im, k) => ({ src: im.src, alt: CS[id].title + ' ' + (k + 1), cap: `${CS[id].title} · ${k + 1} / ${shots.length}` }));
+      shots.forEach((im, k) => im.addEventListener('click', () => lbOpen(list, k)));
+    }
+    sheet.classList.remove('out'); sheet.hidden = false; sheet.scrollTop = 0; document.documentElement.style.overflow = 'hidden'; current = id;
+    document.getElementById('sheetX').focus({ preventScroll: true });
+    return true;
+  }
+  function hide(){
+    if (!current) return; current = null;
+    sheet.querySelectorAll('video').forEach(v => v.pause());
+    const done = () => { sheet.hidden = true; sheet.classList.remove('out'); document.documentElement.style.overflow = ''; if (gal.parentNode === body) { document.body.appendChild(gal); gal.hidden = true; } body.innerHTML = ''; };
+    if (reduce) return done();
+    sheet.classList.add('out'); setTimeout(done, 340);
+  }
+  const open = id => { if (show(id)) history.pushState({ sheet: id }, '', '#' + id); };
+  const close = () => { if (history.state && history.state.sheet) history.back(); else { hide(); history.replaceState(null, '', location.pathname); } };
+  document.addEventListener('click', e => {
+    const o = e.target.closest('[data-open]'); if (o) { e.preventDefault(); if (current) { show(o.dataset.open); history.replaceState({ sheet: o.dataset.open }, '', '#' + o.dataset.open); } else open(o.dataset.open); return; }
+    if (e.target.closest('[data-close]') || e.target.closest('#sheetX')) close();
+  });
+  addEventListener('popstate', e => { if (e.state && e.state.sheet) show(e.state.sheet); else hide(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && current && document.getElementById('lb').hidden) close(); }, true);
+  const h = location.hash.slice(1); if (h === 'gallery' || CS[h]) { show(h); history.replaceState({ sheet: h }, '', '#' + h); }
 })();
 </script>
 
