@@ -707,12 +707,12 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
       <div class="pc-info">
         <div class="pc-head"><span class="num">03</span><span class="pc-cat">Vibe coding · Side project · Sept 2026</span></div>
         <h3 class="pc-name">The Long Table · SGV</h3>
-        <p class="pc-sum">My own guide to the San Gabriel Valley: a bilingual map of 110 Asian restaurants with must-order dishes, tips, closures, filters and a nearest-to-me sort. Every listing checked twice.</p>
-        <div class="kpis"><div class="kpi"><b>110</b><span>restaurants mapped</span></div><div class="kpi"><b>99</b><span>still open</span></div><div class="kpi"><b>6</b><span>ways to filter & sort</span></div></div>
-        <div class="pc-foot"><div class="tags dark"><span>Vercel</span><span>Maps</span><span>Bilingual</span></div>
-          <div class="pc-actions"><button class="btn-ghost solid" type="button" data-open="long-table">Case study →</button><a class="btn-ghost" href="https://sgv-eats.vercel.app" target="_blank" rel="noopener">Live site ↗</a><button class="btn-ghost" type="button" data-slides="sgv-01.jpg,sgv-02.jpg" data-title="The Long Table · SGV">Full screen ↗</button></div></div>
+        <p class="pc-sum">A fact-checked field guide to eating in the San Gabriel Valley. Every restaurant sits on one map with what to order, what to know before you go, and the story behind the place.</p>
+        <div class="kpis"><div class="kpi"><b>110</b><span>restaurants on one map</span></div><div class="kpi"><b>2</b><span>rounds of fact-checking each</span></div><div class="kpi"><b>15</b><span>cities covered</span></div></div>
+        <div class="pc-foot"><div class="tags dark"><span>Vercel</span><span>OpenStreetMap</span><span>Fact-checking</span></div>
+          <div class="pc-actions"><button class="btn-ghost solid" type="button" data-open="long-table">Case study →</button><a class="btn-ghost" href="https://sgv-eats.vercel.app" target="_blank" rel="noopener">Live site ↗</a><button class="btn-ghost" type="button" data-slides="sgv-01.jpg,sgv-02.jpg,sgv-03.jpg" data-title="The Long Table · SGV">Full screen ↗</button></div></div>
       </div>
-      <figure class="pc-visual"><img src="img/sgv-01.jpg" alt="The Long Table SGV project cover" loading="lazy"></figure>
+      <figure class="pc-visual"><img src="img/sgv-01.jpg" alt="The Long Table SGV homepage with its hand-built map" loading="lazy"></figure>
     </article></div>
     <div class="stack-item"><article class="pcard" data-glass data-i="3">
       <div class="pc-info">
@@ -1364,15 +1364,17 @@ void main(){
       ],
       shots: ['fc-02.jpg', 'fc-03.jpg', 'fc-04.jpg', 'fc-05.jpg', 'fc-06.jpg', 'fc-08.jpg', 'fc-07.jpg'], phones: true },
     'long-table': { cat: 'Vibe coding · Side project · Sept 2026', title: 'The Long Table · SGV',
-      lede: 'My own guide to eating in the San Gabriel Valley: a bilingual map and index of 110 Asian restaurants, each checked twice.',
+      lede: 'A field guide to eating in the San Gabriel Valley: 110 restaurants on one map, written in Chinese, with every claim checked against the restaurant’s own menu before it went on the page.',
       links: [['Live site ↗', 'https://sgv-eats.vercel.app']], hero: { img: 'sgv-01.jpg' },
-      stats: [['110', 'restaurants mapped'], ['99', 'still open'], ['22', 'in San Gabriel, the top city'], ['20', 'dumpling and noodle spots']],
+      stats: [['110', 'restaurants on one map'], ['15', 'cities across the valley'], ['10', 'food categories'], ['2', 'rounds of fact-checking per entry']],
       secs: [
-        ['Why I made it', '<p>I’ve logged 300+ restaurants on Beli, and the SGV is where I eat most. Friends kept asking where to go, so I turned my list into something they can open on a phone and use on the spot.</p>'],
-        ['What it does', '<ul><li>Interactive map plus a searchable index, in English and Chinese.</li><li>Filter by city and cuisine, show only places that are still open.</li><li>Sort by nearest (enter a ZIP), top-rated, or random when you can’t decide.</li><li>Each listing has must-order dishes and a tip.</li></ul>'],
-        ['How it was built', '<p>Vibe-coded with AI tools and deployed on Vercel. The data is my own: every restaurant was checked twice for whether it is still open.</p>']
+        ['Why I made it', '<p>I’ve logged 300+ restaurants on Beli, and the SGV is where I eat most. Friends kept asking where to go, and the lists online are often out of date: places that closed, awards credited to the wrong branch, hours that changed. I wanted a guide I could trust enough to send to people.</p>'],
+        ['What each entry tells you', '<ul><li><b>What to order.</b> The dishes the place is known for, named the way the menu names them.</li><li><b>What to know before you go.</b> Cash only, closed Tuesdays, join the Yelp waitlist first, sold out by 3pm.</li><li><b>The story.</b> Who opened it and when, a Michelin Bib Gourmand, what Jonathan Gold wrote about it.</li><li><b>What’s next door.</b> Links like “3 minutes’ walk” or “same plaza” to other entries, so one trip can cover two or three stops.</li></ul>'],
+        ['How it was checked', '<p>The base list is Peter &amp; Lisa Kim’s “101 Places to Eat in SGV”, merged with our own picks and de-duplicated. Each restaurant got a round of research, then a second, adversarial pass that checked every claim against the restaurant’s own menu and website, local food press and current business listings. Anything the two rounds disagreed on was deleted.</p><p>That second pass caught real mistakes: an award listed under the wrong branch, and a restaurant marked closed on the strength of a quote that turned out not to exist. Places that did close stay on the list, labelled with the closing date. A Chinese name is shown only when the restaurant writes one itself.</p>'],
+        ['How you use it', '<ul><li>A map drawn from real OpenStreetMap road data. Tap a number to jump to that restaurant, and back.</li><li>Filter by city or by category, including hole-in-the-wall spots and somewhere-a-bit-nicer.</li><li>Enter a ZIP to sort by distance, or sort by top-rated, or let it pick at random.</li><li>Anyone can rate a place without logging in, one vote per device. Your check-ins stay in your own browser.</li></ul>'],
+        ['How it was built', '<p>Vibe-coded with AI tools and deployed on Vercel. The rule throughout: a claim only stays on the page if both rounds of checking agree.</p>']
       ],
-      shots: ['sgv-02.jpg'] }
+      shots: ['sgv-02.jpg', 'sgv-03.jpg'] }
   };
   const order = ['mend', 'fortune-cookie', 'long-table'];
   const media = f => /\.mp4$/.test(f) ? `<video src="img/${f}" poster="img/${f.replace('.mp4', '.jpg')}" controls muted playsinline preload="none"></video>` : `<img src="img/${f}" alt="" loading="lazy" data-shot="${f}">`;
