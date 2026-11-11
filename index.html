@@ -493,6 +493,16 @@ html.no-gl [data-glass]{background:rgba(22,22,30,.55);-webkit-backdrop-filter:bl
 .btn-ghost.solid{background:var(--mist);color:var(--ink);border-color:var(--mist)}
 .btn-ghost.solid:hover{background:#fff}
 .pc-actions .btn-ghost{padding:10px 20px;font-size:.78rem}
+/* live site preview */
+.cs-hero.live{background:#14131b}
+.live-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);border-bottom:1px solid var(--line-light)}
+.live-bar span{display:flex;align-items:center;gap:8px;opacity:.75}
+.live-bar i{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{to{box-shadow:0 0 0 9px rgba(74,222,128,0)}}
+.live-bar a{color:var(--gold);text-decoration:none;white-space:nowrap}
+.live-box{position:relative;aspect-ratio:16/10;overflow:hidden;background-size:cover;background-position:top center}
+@media(max-width:620px){.live-box{aspect-ratio:3/4}}
+.live-box iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#fff}
 /* case study */
 .cs>*{animation:csIn .8s var(--ease-out) backwards}
 .cs>*:nth-child(2){animation-delay:.06s}.cs>*:nth-child(3){animation-delay:.12s}.cs>*:nth-child(4){animation-delay:.18s}.cs>*:nth-child(n+5){animation-delay:.24s}
@@ -1365,7 +1375,7 @@ void main(){
       shots: ['fc-02.jpg', 'fc-03.jpg', 'fc-04.jpg', 'fc-05.jpg', 'fc-06.jpg', 'fc-08.jpg', 'fc-07.jpg'], phones: true },
     'long-table': { cat: 'Vibe coding · Side project · Sept 2026', title: 'The Long Table · SGV',
       lede: 'A field guide to eating in the San Gabriel Valley: 110 restaurants on one map, written in Chinese, with every claim checked against the restaurant’s own menu before it went on the page.',
-      links: [['Live site ↗', 'https://sgv-eats.vercel.app']], hero: { img: 'sgv-01.jpg' },
+      links: [['Live site ↗', 'https://sgv-eats.vercel.app']], hero: { img: 'sgv-01.jpg', live: 'https://sgv-eats.vercel.app' },
       stats: [['110', 'restaurants on one map'], ['15', 'cities across the valley'], ['10', 'food categories'], ['2', 'rounds of fact-checking per entry']],
       secs: [
         ['Why I made it', '<p>I’ve logged 300+ restaurants on Beli, and the SGV is where I eat most. Friends kept asking where to go, and the lists online are often out of date: places that closed, awards credited to the wrong branch, hours that changed. I wanted a guide I could trust enough to send to people.</p>'],
@@ -1382,13 +1392,17 @@ void main(){
     const c = CS[id], nx = order[(order.indexOf(id) + 1) % order.length];
     return `<article class="cs"><div class="cs-cat">${c.cat}</div><h2 class="sheet-title hero-heading">${c.title}</h2><p class="cs-lede">${c.lede}</p>
       <div class="cs-links">${c.links.map(([t, u]) => `<a class="btn-ghost" href="${u}" target="_blank" rel="noopener">${t}</a>`).join('')}</div>
-      <div class="cs-hero">${c.hero.video ? `<video src="img/${c.hero.video}" poster="img/${c.hero.video.replace('.mp4', '.jpg')}" controls playsinline preload="metadata"></video>` : `<img src="img/${c.hero.img}" alt="${c.title}">`}</div>
+      ${c.hero.live ? `<div class="cs-hero live"><div class="live-bar"><span><i></i>Live preview · scroll and click inside</span><a href="${c.hero.live}" target="_blank" rel="noopener">Open full site ↗</a></div><div class="live-box" style="background-image:url(img/${c.hero.img})"><iframe src="${c.hero.live}" title="${c.title} live preview" loading="lazy"></iframe></div></div>` : `<div class="cs-hero">${c.hero.video ? `<video src="img/${c.hero.video}" poster="img/${c.hero.video.replace('.mp4', '.jpg')}" controls playsinline preload="metadata"></video>` : `<img src="img/${c.hero.img}" alt="${c.title}">`}</div>`}
       <div class="cs-stats">${c.stats.map(([v, l]) => `<div class="cs-stat"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
       ${c.secs.map(([h, t]) => `<section class="cs-sec"><h3>${h}</h3><div>${t}</div></section>`).join('')}
       <div class="cs-shots${c.phones ? ' phones' : ''}">${c.shots.map(media).join('')}</div>
       <div class="cs-next"><button class="btn-ghost" type="button" data-close>← All projects</button><button class="btn-contact" type="button" data-open="${nx}">Next: ${CS[nx].title} →</button></div></article>`;
   }
   let current = null;
+  // live site preview: render the real site at a fixed size, then scale it to fit the frame
+  function fitLive(){ const box = body.querySelector('.live-box'); if (!box) return; const f = box.firstElementChild, w = box.clientWidth, base = w < 620 ? 400 : 1280;
+    f.style.width = base + 'px'; f.style.height = Math.round(base * box.clientHeight / w) + 'px'; f.style.transform = `scale(${w / base})`; }
+  addEventListener('resize', fitLive);
   function show(id){
     if (id !== 'gallery' && !CS[id]) return false;
     if (gal.parentNode === body) document.body.appendChild(gal), gal.hidden = true;
@@ -1396,6 +1410,7 @@ void main(){
     if (id === 'gallery') { body.appendChild(gal); gal.hidden = false; }
     else {
       body.innerHTML = caseHTML(id);
+      fitLive();
       const shots = [...body.querySelectorAll('[data-shot]')];
       const list = shots.map((im, k) => ({ src: im.src, alt: CS[id].title + ' ' + (k + 1), cap: `${CS[id].title} · ${k + 1} / ${shots.length}` }));
       shots.forEach((im, k) => im.addEventListener('click', () => lbOpen(list, k)));
